@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>User Management API Demo</title>
+    <style>
+        body{
+            font-family: Arial, sans-serif;
+            max-width: 700px;
+            margin: 20px auto;
+            padding: 20px;
+        }
+        input, button{
+            padding: 10px;
+            margin: 5px;
+        }
+        table{
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td{
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: center;
+        }
+        th{
+            background: #f4f4f4;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>User Management API Demo</h1>
+
+    <input type="text" id="name" placeholder="Enter Name">
+    <input type="email" id="email" placeholder="Enter Email">
+    <button onclick="addUser()">Add User</button>
+
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody id="userTable"></tbody>
+    </table>
+
+    <script>
+        let users = [];
+        let id = 1;
+
+        function addUser() {
+            const name = document.getElementById("name").value;
+            const email = document.getElementById("email").value;
+
+            if(name === "" || email === ""){
+                alert("Please fill all fields");
+                return;
+            }
+
+            users.push({
+                id: id++,
+                name: name,
+                email: email
+            });
+
+            document.getElementById("name").value = "";
+            document.getElementById("email").value = "";
+
+            displayUsers();
+        }
+
+        function deleteUser(userId) {
+            users = users.filter(user => user.id !== userId);
+            displayUsers();
+        }
+
+        function displayUsers() {
+            let output = "";
+
+            users.forEach(user => {
+                output += `
+                    <tr>
+                        <td>${user.id}</td>
+                        <td>${user.name}</td>
+                        <td>${user.email}</td>
+                        <td>
+                            <button onclick="deleteUser(${user.id})">
+                                Delete
+                            </button>
+                        </td>
+                    </tr>
+                `;
+            });
+
+            document.getElementById("userTable").innerHTML = output;
+        }
+    </script>
+
+</body>
+</html>
